@@ -2,7 +2,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { Task } from "../types";
 import { Fragment } from "react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteTaskApi } from "../api/task.api";
+import Swal from "sweetalert2";
 
 type TaskCardProps = {
   task: Task;
@@ -11,7 +14,28 @@ type TaskCardProps = {
 export default function TaskCard({ task }: TaskCardProps) {
 
   const navigate = useNavigate();
+  const paramas = useParams()
+  const projectId = paramas.projectId!
 
+  const queryClient = useQueryClient()
+
+  const {mutate} = useMutation({
+    mutationFn: deleteTaskApi,
+    onError: (error) => {
+      Swal.fire({
+        icon: "error",
+        title: error.message,
+        text: "Ocurrió un error, verifique los datos!",
+      });
+    },
+    onSuccess: (data) => {
+      Swal.fire(data?._id, "Proyecto eliminado", "success");
+      queryClient.invalidateQueries({queryKey: ['editProject', projectId]});
+      navigate(location.pathname, { replace: true });
+    },
+        
+  })
+  
 
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between">
@@ -44,6 +68,7 @@ export default function TaskCard({ task }: TaskCardProps) {
                 <button
                   type="button"
                   className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                  onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
                 >
                   Ver Tarea
                 </button>
@@ -62,6 +87,7 @@ export default function TaskCard({ task }: TaskCardProps) {
                 <button
                   type="button"
                   className="block px-3 py-1 text-sm leading-6 text-red-500"
+                  onClick={() => mutate({projectId, taskId: task._id})}
                 >
                   Eliminar Tarea
                 </button>

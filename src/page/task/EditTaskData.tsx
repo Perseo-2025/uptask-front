@@ -1,7 +1,7 @@
 /* Este archivo hace consulta al id */
 
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useParams } from "react-router-dom"
+import { Navigate, useLocation, useParams } from "react-router-dom"
 import { getTaskById } from "../../api/task.api";
 import EditTaskModal from "./EditTaskModal";
 /* import EditTaskModal from "./EditTaskModal"; */
@@ -19,13 +19,14 @@ export default function EditTaskData() {
   const taskId = queryParams.get('editTaskId')! //<---- ojo
   console.log(taskId);
 
-  const {data} = useQuery({
+  const {data, isError} = useQuery({
     queryKey: ['task',taskId],
     queryFn: () => getTaskById({projectId, taskId}),
     enabled: !!taskId //convierte a booleano
   })
-  console.log(data);
+
+  if(isError) return <Navigate  to='/404'/>
   
-  if(data) return <EditTaskModal data={data}/>
+  if(data) return <EditTaskModal data={data} taskId={taskId}/>
   
 }

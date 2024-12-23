@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import Modal from "../task/Modal"
 import TaskList from "../task/TaskList"
 import EditTaskData from "../task/EditTaskData"
+import TaskModalDetails from "../task/TaskModalDetails"
 /* import EditModal from "../task/EditTaskModal" */
 
 export default function ProjectDetails() {
@@ -14,7 +15,7 @@ export default function ProjectDetails() {
   const projectId = params.projectId!
   
   const {data, isLoading,isError} = useQuery({ 
-    queryKey: ['editProject', projectId],
+    queryKey: ['editProject', projectId], //-ojito aqui
     queryFn: () => getProjectsById(projectId),
     retry: false,
   })
@@ -39,8 +40,14 @@ export default function ProjectDetails() {
       <TaskList
         tasks={data.tasks}
       />
+      {/* Modales ventana flotante*/}
+
       <Modal/>
+
       <EditTaskData />
+
+      <TaskModalDetails/>
+
     </>
   )
   
