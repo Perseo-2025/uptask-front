@@ -4,6 +4,11 @@ import Dashboard from "../../page/Admin/Dashboard"
 import ProjectPage from "../../page/projects/ProjectPage"
 import Edit from "../../page/projects/Edit"
 import ProjectDetails from "../../page/projects/ProjectDetails"
+import Login from "../../auth/login/Login"
+import AuthLayout from "../../layouts/AuthLayout"
+import Register from "../../auth/register/Register"
+import ConfirmAccount from "../../auth/confirm-account/ConfirmAccount"
+
 
 
 export default function Router() {
@@ -17,6 +22,13 @@ export default function Router() {
                     <Route path="/projects/:projectId/edit" element={<Edit/>}/>
                     <Route path="/projects/:projectId/details-projects" element={<ProjectDetails />}/>
                 </Route>
+
+                <Route element={<AuthLayout/>} >
+                    <Route path='/auth/login' element={<Login/>}></Route>
+                    <Route path='/auth/register' element={<Register/>}></Route>
+                    <Route path='/auth/confirm-account' element={<ConfirmAccount/>}></Route>
+                </Route>
+
             </Routes>
         </BrowserRouter>
     )

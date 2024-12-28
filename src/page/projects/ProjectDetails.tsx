@@ -15,7 +15,7 @@ export default function ProjectDetails() {
   const projectId = params.projectId!
   
   const {data, isLoading,isError} = useQuery({ 
-    queryKey: ['editProject', projectId], //-ojito aqui
+    queryKey: ['editProject', projectId], //-ojito aqui //me confundí: en vez de editProject deberi de ser solo 'project' para la mutación pero igual funciona
     queryFn: () => getProjectsById(projectId),
     retry: false,
   })

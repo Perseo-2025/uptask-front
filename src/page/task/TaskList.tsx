@@ -1,5 +1,7 @@
 import TaskCard from "../../components/TaskCard";
+import { statusTranslation } from "../../traductor/es";
 import { Task } from "../../types";
+
 
 type TaskListProps = {
   tasks: Task[];
@@ -26,13 +28,6 @@ const statusStyles: { [key: string]: string } = {
 };
 
 
-const stausTranslation: { [key: string]: string } = {
-    pending: "Pendiente",
-    onHold: "En Espera",
-    inProgress: "En Progreso",
-    underReview: "En Revisión",
-    completed: "Completado",
-  };
 
 
 export default function TaskList({ tasks }: TaskListProps) {
@@ -56,7 +51,7 @@ export default function TaskList({ tasks }: TaskListProps) {
                 className={`capitalize text-xl font-light border border-slate-300
                     bg-white p-3 border-t-8 ${statusStyles[status]}`}
               >
-                {stausTranslation[status]}
+                {statusTranslation[status]}
               </h3>
               {tasks.length === 0 ? (
                 <li className="text-gray-500 text-center pt-3">

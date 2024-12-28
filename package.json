@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/pin-input": "^2.1.0",
+    "@chakra-ui/react": "^3.2.3",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@tanstack/react-query": "^5.62.8",
     "@tanstack/react-query-devtools": "^5.62.8",
     "axios": "^1.7.9",
     "flowbite": "^2.5.2",
+    "framer-motion": "^11.15.0",
     "i": "^0.3.7",
     "npm": "^10.9.2",
     "react": "^18.3.1",
