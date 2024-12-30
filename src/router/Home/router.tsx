@@ -8,6 +8,7 @@ import Login from "../../auth/login/Login"
 import AuthLayout from "../../layouts/AuthLayout"
 import Register from "../../auth/register/Register"
 import ConfirmAccount from "../../auth/confirm-account/ConfirmAccount"
+import RegisterNewToken from "../../auth/request-new-token/RequestNewToken"
 
 
 
@@ -27,6 +28,7 @@ export default function Router() {
                     <Route path='/auth/login' element={<Login/>}></Route>
                     <Route path='/auth/register' element={<Register/>}></Route>
                     <Route path='/auth/confirm-account' element={<ConfirmAccount/>}></Route>
+                    <Route path='/auth/request-new-token' element={<RegisterNewToken/>}></Route>
                 </Route>
 
             </Routes>

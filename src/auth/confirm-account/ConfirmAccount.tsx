@@ -81,7 +81,7 @@ export default function ConfirmAccount() {
         {/* Navegación */}
         <nav className="mt-6 text-center">
           <Link
-            to="/auth/new-code"
+            to="/auth/request-new-token"
             className="text-fuchsia-600 hover:underline text-base font-medium"
           >
             Solicitar un nuevo Código
