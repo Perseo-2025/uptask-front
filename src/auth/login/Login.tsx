@@ -1,23 +1,42 @@
 import { useForm } from "react-hook-form";
 import { UserLoginForm } from "../validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { authenticate } from "../../api/auth.api";
+import { useMutation } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 
 
 export default function Login() {
 
-  const initialValues: UserLoginForm = {
-    email: '',
-    password: '',
-  }
+  const initialValues: UserLoginForm = {email: '',password: ''}
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+  const navigate = useNavigate()
+  console.log(navigate);
+  
+  const {mutate} = useMutation({
+    mutationFn: authenticate,
+    onError: (error) => {
+      Swal.fire({
+        icon: "error",
+        title: error.message,
+        text: "Hubo un error, verifique los datos! O la cuenta no ha sido confirmada",
+      });
+    },
+    onSuccess: (data) => {
+      Swal.fire(data?.data, "Bienvenido", "success");
+      //navigate('')
+    },
+  })
 
   const handleLogin = (formData: UserLoginForm) => { 
-    console.log(formData);
-    
+    mutate(formData)
   }  
   return (
     <>
+        <h2 className="text-3xl font-bold text-gray-800 text-center">
+          Inicia Sesión
+        </h2>
       <form
         onSubmit={handleSubmit(handleLogin)}
         className="space-y-8 p-10 bg-white"
@@ -75,6 +94,12 @@ export default function Login() {
         ¿No tienes una cuenta?{" "}
         <Link to={"/auth/register"} className="text-blue-600 hover:underline">
           Regístrate aquí
+        </Link>
+      </p>
+      <p className="text-gray-500 text-sm text-center mt-8">
+        ¿Olvidastetu contraseña? 
+        <Link to={"/auth/change-password"} className="text-blue-600 hover:underline">
+          Reestablecer
         </Link>
       </p>
     </>

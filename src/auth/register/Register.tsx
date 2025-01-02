@@ -174,6 +174,12 @@ export default function Register() {
             Inicia sesión aquí
           </Link>
         </p>
+        <p className="text-gray-500 text-sm text-center mt-8">
+        ¿Olvidastetu contraseña? 
+        <Link to={"/auth/change-password"} className="text-blue-600 hover:underline">
+          Reestablecer
+        </Link>
+      </p>
       </form>
     </>
   );

@@ -9,6 +9,8 @@ import AuthLayout from "../../layouts/AuthLayout"
 import Register from "../../auth/register/Register"
 import ConfirmAccount from "../../auth/confirm-account/ConfirmAccount"
 import RegisterNewToken from "../../auth/request-new-token/RequestNewToken"
+import ChangePassword from "../../auth/change-password/ChangePassword"
+import NewPassword from "../../auth/change-password/NewPassword"
 
 
 
@@ -29,6 +31,8 @@ export default function Router() {
                     <Route path='/auth/register' element={<Register/>}></Route>
                     <Route path='/auth/confirm-account' element={<ConfirmAccount/>}></Route>
                     <Route path='/auth/request-new-token' element={<RegisterNewToken/>}></Route>
+                    <Route path='/auth/change-password' element={<ChangePassword/>}></Route>
+                    <Route path='/auth/new-password' element={<NewPassword/>}></Route>
                 </Route>
 
             </Routes>
