@@ -22,7 +22,7 @@ export default function ConfirmAccount() {
     },
     onSuccess: (data) => {
       Swal.fire(
-        data?.data,
+        data,
         "Excelente",
         "success"
       );

@@ -30,7 +30,7 @@ export default function NewPasswordFormulario({token} : NewPasswordFormularioPro
             });
           },
           onSuccess: (data) => {
-            Swal.fire(data?.data, "Todo bien", "success");
+            Swal.fire(data, "Todo bien", "success");
             reset() //<- reinicia el formulario
             navigate('/auth/login')
           },

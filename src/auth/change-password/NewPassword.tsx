@@ -19,7 +19,7 @@ export default function NewPassword() {
         <h2 className="text-3xl font-bold text-gray-800 text-center">
           Escribe tu nuevo Password
         </h2>
-
+        
         {
           !isValueToken ? <NewPasswordToken token= {token} setToken={setToken} setIsValidToken={setIsValidToken} /> 
           : <NewPasswordFormulario token = {token} />

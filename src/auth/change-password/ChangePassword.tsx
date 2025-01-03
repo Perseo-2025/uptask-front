@@ -23,7 +23,7 @@ export default function ChangePassword() {
       });
     },
     onSuccess: (data) => {
-      Swal.fire(data?.data, "Se envió un nuevo token exitosamente", "success");
+      Swal.fire(data, "Se envió un nuevo token exitosamente", "success");
     },
   })
   

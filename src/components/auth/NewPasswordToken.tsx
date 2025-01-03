@@ -23,7 +23,7 @@ export default function NewPasswordToken({token, setToken, setIsValidToken} : Ne
             });
           },
           onSuccess: (data) => {
-            Swal.fire(data?.data, "Se envió un token de validación", "success");
+            Swal.fire(data, "Se envió un token de validación", "success");
             setIsValidToken(true)
           },
     })
