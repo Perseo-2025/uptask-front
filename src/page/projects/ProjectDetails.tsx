@@ -5,6 +5,7 @@ import Modal from "../task/Modal"
 import TaskList from "../task/TaskList"
 import EditTaskData from "../task/EditTaskData"
 import TaskModalDetails from "../task/TaskModalDetails"
+import Spineer from "../../components/Spineer"
 /* import EditModal from "../task/EditTaskModal" */
 
 export default function ProjectDetails() {
@@ -20,7 +21,7 @@ export default function ProjectDetails() {
     retry: false,
   })
  
-  if(isLoading) return "Cargando..."
+  if(isLoading) return <Spineer />
   if(isError) return <Navigate to='/404'/>
   
 

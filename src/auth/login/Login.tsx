@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { UserLoginForm } from "../validation";
-import { Link, /* useNavigate  */} from "react-router-dom";
+import { Link,  useNavigate  } from "react-router-dom";
 import { authenticate } from "../../api/auth.api";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
@@ -11,7 +11,7 @@ export default function Login() {
 
   const initialValues: UserLoginForm = {email: '',password: ''}
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
   
   const {mutate} = useMutation({
     mutationFn: authenticate,
@@ -23,8 +23,9 @@ export default function Login() {
       });
     },
     onSuccess: (data) => {
-      Swal.fire(data, "Bienvenido", "success");
-      //navigate('')
+      console.log(data);
+      //Swal.fire(data, "Bienvenido", "success");
+      navigate('/dashboard')
     },
   })
 

@@ -1,7 +1,20 @@
 import {  NavLink } from "react-router-dom";
+import { User } from "../auth/validation";
+import { useQueryClient } from "@tanstack/react-query";
+
+type NavMenuHeaderProps = {
+  name: User['name']
+}
+
+export default function Header({name}:NavMenuHeaderProps) {
+
+  const queryClient = useQueryClient()
+  const logout = () => {
+    localStorage.removeItem('AUTH_TOKEN')
+    queryClient.invalidateQueries({queryKey: ['user']})
+  }
 
 
-export default function Header() {
   return (
     <header>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -68,6 +81,15 @@ export default function Header() {
           >
             Nuevo Proyecto
           </NavLink>
+        </li>
+        <li>
+          <span>Bienvenido {name}</span>
+        </li>
+        <li>
+        <button type="button" 
+        className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        onClick={logout}
+        >Cerrar Sesión</button>
         </li>
       </ul>
           </div>

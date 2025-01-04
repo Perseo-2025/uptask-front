@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { ConfirmToken, ForgotPasswordForm, NewPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "../auth/validation/index";
+import { ConfirmToken, ForgotPasswordForm, NewPasswordForm, RequestConfirmationCodeForm, User, UserLoginForm, UserRegistrationForm } from "../auth/validation/index";
 
 export async function createAccount(formData:UserRegistrationForm) {
     try {
@@ -91,9 +91,9 @@ export async function updatePasswordWithToken({formData, token}:{formData: NewPa
 }
 
 export async function getUserApi() {
+    const token = localStorage.getItem('AUTH_TOKEN') //obtenemos el token
     try {
-        const { data } = await api('/auth/perfil/user')
-        console.log(data);
+        const { data } = await api<User>('/auth/perfil/user', {headers: {Authorization: `Bearer ${token}`}})
         return data
     } catch (error) {
         if(isAxiosError(error) && error.response){
