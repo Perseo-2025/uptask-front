@@ -11,6 +11,7 @@ import ConfirmAccount from "../../auth/confirm-account/ConfirmAccount"
 import RegisterNewToken from "../../auth/request-new-token/RequestNewToken"
 import ChangePassword from "../../auth/change-password/ChangePassword"
 import NewPassword from "../../auth/change-password/NewPassword"
+import Team from "../../page/projects/team/Team"
 
 
 
@@ -22,8 +23,9 @@ export default function Router() {
                 <Route element={<AppLayout/>}>
                     <Route path="/dashboard" element={<Dashboard/>} index/>
                     <Route path="/projects/create" element={<ProjectPage/>}/>
-                    <Route path="/projects/:projectId/edit" element={<Edit/>}/>
                     <Route path="/projects/:projectId/details-projects" element={<ProjectDetails />}/>
+                    <Route path="/projects/:projectId/edit" element={<Edit/>}/>
+                    <Route path="/projects/:projectId/details-projects/team" element={<Team />}/>
                 </Route>
 
                 <Route element={<AuthLayout/>} >

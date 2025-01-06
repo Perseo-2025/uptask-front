@@ -19,5 +19,9 @@ export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 export type ConfirmToken = Pick<Auth, 'token'>
 
 /* Users */
-export const userPerfilSchema = authSchema.pick({ name: true, email: true}).extend({_id: z.string()})
+export const userPerfilSchema = authSchema.pick({ 
+    name: true, 
+    email: true}).extend({
+    _id: z.string()
+})
 export type User = z.infer<typeof userPerfilSchema>

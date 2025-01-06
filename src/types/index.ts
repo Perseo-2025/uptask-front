@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import { userPerfilSchema } from '../auth/validation';
 
 /* Task */
 
@@ -38,3 +39,15 @@ export const dashboardProjectsSchema = z.array(
 
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectFormData = Pick<Project, 'clientName' | 'projectName' | 'description'>
+
+/* TEAM */
+export const teamMemberSchema = userPerfilSchema.pick({
+    name:true,
+    email: true,
+    _id: true
+})
+
+
+export const teamMembersSchema = z.array(teamMemberSchema)
+export type TeamMember = z.infer<typeof teamMemberSchema>
+export type TeamMemberFormulario = Pick<TeamMember, 'email'>
