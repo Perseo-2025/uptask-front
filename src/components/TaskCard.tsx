@@ -9,17 +9,17 @@ import Swal from "sweetalert2";
 
 type TaskCardProps = {
   task: Task;
+  canEdit: boolean;
 };
 
-export default function TaskCard({ task }: TaskCardProps) {
-
+export default function TaskCard({ task, canEdit }: TaskCardProps) {
   const navigate = useNavigate();
-  const paramas = useParams()
-  const projectId = paramas.projectId!
+  const paramas = useParams();
+  const projectId = paramas.projectId!;
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: deleteTaskApi,
     onError: (error) => {
       Swal.fire({
@@ -30,12 +30,10 @@ export default function TaskCard({ task }: TaskCardProps) {
     },
     onSuccess: (data) => {
       Swal.fire(data?._id, "Proyecto eliminado", "success");
-      queryClient.invalidateQueries({queryKey: ['editProject', projectId]});
+      queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
       navigate(location.pathname, { replace: true });
     },
-        
-  })
-  
+  });
 
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between">
@@ -43,6 +41,9 @@ export default function TaskCard({ task }: TaskCardProps) {
         <button
           type="button"
           className="text-xl font-bold text-slate-900 hover:text-slate-700"
+          onClick={() =>
+            navigate(location.pathname + `?viewTask=${task._id}`)
+          }
         >
           {task.name}
         </button>
@@ -68,30 +69,39 @@ export default function TaskCard({ task }: TaskCardProps) {
                 <button
                   type="button"
                   className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                  onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
+                  onClick={() =>
+                    navigate(location.pathname + `?viewTask=${task._id}`)
+                  }
                 >
                   Ver Tarea
                 </button>
               </Menu.Item>
-              <Menu.Item>
-                <button
-                  type="button"
-                  className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                  onClick={() => navigate(location.pathname + `?editTaskId=${task._id}`)}
-                >
-                  Editar Tarea
-                </button>
-              </Menu.Item>
 
-              <Menu.Item>
-                <button
-                  type="button"
-                  className="block px-3 py-1 text-sm leading-6 text-red-500"
-                  onClick={() => mutate({projectId, taskId: task._id})}
-                >
-                  Eliminar Tarea
-                </button>
-              </Menu.Item>
+              {canEdit && (
+                <>
+                  <Menu.Item>
+                    <button
+                      type="button"
+                      className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                      onClick={() =>
+                        navigate(location.pathname + `?editTaskId=${task._id}`)
+                      }
+                    >
+                      Editar Tarea
+                    </button>
+                  </Menu.Item>
+
+                  <Menu.Item>
+                    <button
+                      type="button"
+                      className="block px-3 py-1 text-sm leading-6 text-red-500"
+                      onClick={() => mutate({ projectId, taskId: task._id })}
+                    >
+                      Eliminar Tarea
+                    </button>
+                  </Menu.Item>
+                </>
+              )}
             </Menu.Items>
           </Transition>
         </Menu>

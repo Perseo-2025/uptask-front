@@ -6,9 +6,14 @@ import TaskList from "../task/TaskList"
 import EditTaskData from "../task/EditTaskData"
 import TaskModalDetails from "../task/TaskModalDetails"
 import Spineer from "../../components/Spineer"
+import { useAuth } from "../../hooks/useAuth"
+import isManager from "../../util/policies"
+import { useMemo } from "react"
 /* import EditModal from "../task/EditTaskModal" */
 
 export default function ProjectDetails() {
+
+  const { data: user, isLoading: authLoading } = useAuth()
 
   const navigate = useNavigate()
 
@@ -20,32 +25,39 @@ export default function ProjectDetails() {
     queryFn: () => getProjectsById(projectId),
     retry: false,
   })
- 
-  if(isLoading) return <Spineer />
-  if(isError) return <Navigate to='/404'/>
+
+  const canEdit = useMemo(() => data?.manager === user?._id , [data, user])
+  console.log(canEdit); 
   
 
-  if(data) return (
+  if(isLoading && authLoading) return <Spineer />
+  if(isError) return <Navigate to='/404'/>
+  if(data && user) return (
     <>
       <h1 className="text-5xl font-semibold">{data.projectName}</h1>
       <p className="text-2xl font-semibold">{data.description}</p>
 
-      <nav className="my-5 flex gap-3">
-        <button className="bg-indigo-600 hover:bg-indigo-800 transition-colors text-white font-bold uppercase rounded-lg p-3 flex gap-3 items-center"
-          type="button"
-          onClick={() => navigate('?newTask=true')}
-        >
-          Agregar Tarea
-        </button>
+      {isManager(data.manager, user._id) && (
+          <nav className="my-5 flex gap-3">
+          <button className="bg-indigo-600 hover:bg-indigo-800 transition-colors text-white font-bold uppercase rounded-lg p-3 flex gap-3 items-center"
+            type="button"
+            onClick={() => navigate('?newTask=true')}
+          >
+            Agregar Tarea
+          </button>
+  
+          <Link className="bg-fuchsia-600 hover:bg-fuchsia-700 transition-colors text-white font-bold uppercase rounded-lg p-3 flex gap-3 items-center"
+            to={"team"}
+          >
+            Colaboradores
+          </Link>
+        </nav>
+      )}
 
-        <Link className="bg-fuchsia-600 hover:bg-fuchsia-700 transition-colors text-white font-bold uppercase rounded-lg p-3 flex gap-3 items-center"
-          to={"team"}
-        >
-          Colaboradores
-        </Link>
-      </nav>
+      
       <TaskList
         tasks={data.tasks}
+        canEdit={canEdit}
       />
       {/* Modales ventana flotante*/}
 

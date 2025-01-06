@@ -4,7 +4,8 @@ import { Task } from "../../types";
 
 
 type TaskListProps = {
-  tasks: Task[];
+  tasks: Task[]
+  canEdit: boolean
 };
 
 type GroupedTask = {
@@ -30,7 +31,7 @@ const statusStyles: { [key: string]: string } = {
 
 
 
-export default function TaskList({ tasks }: TaskListProps) {
+export default function TaskList({ tasks, canEdit }: TaskListProps) {
   const groupedTasks = tasks.reduce((acc, task) => {
     let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
     currentGroup = [...currentGroup, task];
@@ -58,7 +59,7 @@ export default function TaskList({ tasks }: TaskListProps) {
                   No Hay tareas
                 </li>
               ) : (
-                tasks.map((task) => <TaskCard key={task._id} task={task} />)
+                tasks.map((task) => <TaskCard key={task._id} task={task} canEdit={canEdit} />)
               )}
             </ul>
           </div>
