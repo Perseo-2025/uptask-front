@@ -12,6 +12,11 @@ export const taskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: taskStatusSchema,
+    completedBy: z.array(z.object({
+        status: taskStatusSchema,
+        user: userPerfilSchema,
+        _id: z.string(),
+    })), 
     createdAt: z.string(),
     updatedAt: z.string()
 })

@@ -16,7 +16,7 @@ import { TaskStatus } from "../../types";
 export default function TaskModalDetails() {
   const params = useParams();
   const projectId = params.projectId!;
-  const queryCliente = useQueryClient()
+  const queryCliente = useQueryClient();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,10 +57,10 @@ export default function TaskModalDetails() {
   });
 
   //funcion para seleccionar el estado del select
-  const handleChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
-    const data = {projectId, taskId, status: e.target.value as TaskStatus}
-    mutate(data)
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const data = { projectId, taskId, status: e.target.value as TaskStatus };
+    mutate(data);
+  };
 
   if (isError) {
     Swal.fire({
@@ -119,10 +119,40 @@ export default function TaskModalDetails() {
                     <p className="text-lg text-slate-500 mb-2">
                       {data.description}
                     </p>
+
+                    {/* Mostrar el historial */}
+                    <div className="space-y-4">
+                      <p className="text-lg text-slate-500 font-semibold mb-4">
+                        Historial de cambios
+                      </p>
+
+                      <ul className="relative border-l-2 border-slate-300">
+                        {data.completedBy.map((activityLog, index) => (
+                          <li key={activityLog._id} className="mb-6 ml-6">
+                            <div className="absolute -left-3 w-6 h-6 bg-slate-500 rounded-full border-4 border-white flex items-center justify-center">
+                              <span className="text-xs text-white">
+                                {index + 1}
+                              </span>
+                            </div>
+                            <div className="text-sm">
+                              <span className="font-bold text-slate-600">
+                                {statusTranslation[activityLog.status]}
+                              </span>{" "}
+                              <span className="text-slate-500">por:</span>{" "}
+                              <span className="text-slate-700">
+                                {activityLog.user.name}
+                              </span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    {/* fin */}
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Estado actual</label>
 
-                      <select className="w-ful p-3 bg-white border border-gray-300 rounded-lg"
+                      <select
+                        className="w-ful p-3 bg-white border border-gray-300 rounded-lg"
                         onChange={handleChange}
                       >
                         {Object.entries(statusTranslation).map(

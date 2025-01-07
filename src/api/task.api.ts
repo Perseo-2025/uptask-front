@@ -30,9 +30,11 @@ export async function getTaskById({projectId, taskId}: Pick<TaskAPI, 'projectId'
     try {   
         const url = `/dashboard/${projectId}/tasks/${taskId}`
         const {data} = await api(url, {headers: {Authorization: `Bearer ${token}`}})
-        console.log('No hay nadada',data);
-        
-        return data
+        const response = taskSchema.safeParse(data)
+        console.log(response);
+        if(response.success){
+            return response.data
+        } 
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error('desde onError');
