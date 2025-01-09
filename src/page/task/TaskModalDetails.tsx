@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { formatDate } from "../../util/format-date";
 import { statusTranslation } from "../../traductor/es";
 import { TaskStatus } from "../../types";
+import NotesPanel from "../../components/notes/NotesPanel";
 
 export default function TaskModalDetails() {
   const params = useParams();
@@ -26,7 +27,7 @@ export default function TaskModalDetails() {
   const show = taskId ? true : false;
 
   const { data, isError, error } = useQuery({
-    queryKey: ["task", taskId],
+    queryKey: ['task', taskId],
     queryFn: () => getTaskById({ projectId, taskId }),
     enabled: !!taskId, //convierte a booleano
     retry: false,
@@ -120,34 +121,39 @@ export default function TaskModalDetails() {
                       {data.description}
                     </p>
 
-                    {/* Mostrar el historial */}
-                    <div className="space-y-4">
-                      <p className="text-lg text-slate-500 font-semibold mb-4">
-                        Historial de cambios
-                      </p>
+                    {data.completedBy.length ? (
+                      <>
+                        {/* Mostrar el historial */}
+                        <div className="space-y-4">
+                          <p className="font-bold text-2xl text-slate-600 my-5">
+                            Historial de cambios
+                          </p>
 
-                      <ul className="relative border-l-2 border-slate-300">
-                        {data.completedBy.map((activityLog, index) => (
-                          <li key={activityLog._id} className="mb-6 ml-6">
-                            <div className="absolute -left-3 w-6 h-6 bg-slate-500 rounded-full border-4 border-white flex items-center justify-center">
-                              <span className="text-xs text-white">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <div className="text-sm">
-                              <span className="font-bold text-slate-600">
-                                {statusTranslation[activityLog.status]}
-                              </span>{" "}
-                              <span className="text-slate-500">por:</span>{" "}
-                              <span className="text-slate-700">
-                                {activityLog.user.name}
-                              </span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    {/* fin */}
+                          <ul className="relative border-l-2 border-slate-300">
+                            {data.completedBy.map((activityLog, index) => (
+                              <li key={activityLog._id} className="mb-6 ml-6">
+                                <div className="absolute -left-3 w-6 h-6 bg-slate-500 rounded-full border-4 border-white flex items-center justify-center">
+                                  <span className="text-xs text-white">
+                                    {index + 1}
+                                  </span>
+                                </div>
+                                <div className="text-sm">
+                                  <span className="font-bold text-slate-600">
+                                    {statusTranslation[activityLog.status]}
+                                  </span>{" "}
+                                  <span className="text-slate-500">por:</span>{" "}
+                                  <span className="text-slate-700">
+                                    {activityLog.user.name}
+                                  </span>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        {/* fin */}
+                      </>
+                    ) : null}
+
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Estado actual</label>
 
@@ -168,6 +174,11 @@ export default function TaskModalDetails() {
                         )}
                       </select>
                     </div>
+
+                    <NotesPanel 
+                      notes = {data.notes}
+                    />
+
                   </Dialog.Panel>
                 </Transition.Child>
               </div>

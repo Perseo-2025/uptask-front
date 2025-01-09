@@ -29,7 +29,7 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
       });
     },
     onSuccess: (data) => {
-      Swal.fire(data?._id, "Proyecto eliminado", "success");
+      Swal.fire(data?._id, "Tarea eliminada correctamente", "success");
       queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
       navigate(location.pathname, { replace: true });
     },
