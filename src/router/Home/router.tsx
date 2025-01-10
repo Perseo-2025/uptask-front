@@ -12,6 +12,9 @@ import RegisterNewToken from "../../auth/request-new-token/RequestNewToken"
 import ChangePassword from "../../auth/change-password/ChangePassword"
 import NewPassword from "../../auth/change-password/NewPassword"
 import Team from "../../page/projects/team/Team"
+import Profile from "../../profile/Profile"
+import ChangePasswordProfile from "../../profile/ChangePasswordProfile"
+import ProfileLayout from "../../layouts/ProfileLayout"
 
 
 
@@ -26,6 +29,11 @@ export default function Router() {
                     <Route path="/projects/:projectId/details-projects" element={<ProjectDetails />}/>
                     <Route path="/projects/:projectId/edit" element={<Edit/>}/>
                     <Route path="/projects/:projectId/details-projects/team" element={<Team />}/>
+
+                    <Route element={<ProfileLayout/>}>
+                        <Route path="/profile" element={<Profile />}/>
+                        <Route path="/profile/change-password" element={<ChangePasswordProfile />}/>
+                    </Route>
                 </Route>
 
                 <Route element={<AuthLayout/>} >
