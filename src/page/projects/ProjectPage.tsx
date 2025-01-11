@@ -29,7 +29,7 @@ export default function ProjectPage() {
         });
       },
       onSuccess: (data) => {
-        Swal.fire(data.message, 'Proyecto Creado :)', 'success');
+        Swal.fire(data, 'Proyecto Creado :)', 'success');
         navigate('/dashboard')
       }
   })

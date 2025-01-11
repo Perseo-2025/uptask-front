@@ -1,18 +1,23 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Task } from "../types";
+import { TaskProject } from "../types";
 import { Fragment } from "react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTaskApi } from "../api/task.api";
 import Swal from "sweetalert2";
+import { useDraggable } from '@dnd-kit/core'
 
 type TaskCardProps = {
-  task: Task;
+  task: TaskProject;
   canEdit: boolean;
 };
 
 export default function TaskCard({ task, canEdit }: TaskCardProps) {
+  const {attributes ,listeners, setNodeRef, transform} = useDraggable({
+    id: task._id //<- que tarea estoy arrastrando hacia que estado
+  });
+
   const navigate = useNavigate();
   const paramas = useParams();
   const projectId = paramas.projectId!;
@@ -33,20 +38,35 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
       queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
       navigate(location.pathname, { replace: true });
     },
-  });
+  })
+
+
+  const style = transform ?  {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,  
+    padding: "1.25rem",
+    backgroundColor: '#FFF',
+    width: '300px',
+    displey: 'flex',
+    borderWidth: '1px',
+    borderColor: 'rgb(203,213,225 / var(--tw-border-opacity))'
+  } : undefined
 
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between">
-      <div className="min-w-0 flex flex-col gap-y-4">
-        <button
-          type="button"
+      <div 
+        {...listeners}
+        {...attributes}
+        ref={setNodeRef}
+        style={style}
+      className="min-w-0 flex flex-col gap-y-4">
+        <p
           className="text-xl font-bold text-slate-900 hover:text-slate-700"
           onClick={() =>
             navigate(location.pathname + `?viewTask=${task._id}`)
           }
         >
           {task.name}
-        </button>
+        </p>
         <p className="text-slate-500">{task.description}</p>
       </div>
       <div className="flex shrink-0  gap-x-6">

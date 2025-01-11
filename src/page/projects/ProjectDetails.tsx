@@ -1,5 +1,5 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
-import { getProjectsById } from "../../api/project.api"
+import { getFullProjectDetails } from "../../api/project.api"
 import { useQuery } from "@tanstack/react-query"
 import Modal from "../task/Modal"
 import TaskList from "../task/TaskList"
@@ -22,13 +22,11 @@ export default function ProjectDetails() {
   
   const {data, isLoading,isError} = useQuery({ 
     queryKey: ['editProject', projectId], //-ojito aqui //me confundí: en vez de editProject deberi de ser solo 'project' para la mutación pero igual funciona
-    queryFn: () => getProjectsById(projectId),
+    queryFn: () => getFullProjectDetails(projectId),
     retry: false,
   })
 
   const canEdit = useMemo(() => data?.manager === user?._id , [data, user])
-  console.log(canEdit); 
-  
 
   if(isLoading && authLoading) return <Spineer />
   if(isError) return <Navigate to='/404'/>

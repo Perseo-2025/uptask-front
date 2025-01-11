@@ -2,45 +2,26 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { Link, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteProject, getProjects } from "../../api/project.api";
-import Swal from "sweetalert2";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useQuery} from "@tanstack/react-query";
+import { getProjects } from "../../api/project.api";
 import Spineer from "../../components/Spineer";
 import { useAuth } from "../../hooks/useAuth";
 import isManager from "../../util/policies";
+import DeleteProjectModal from "../../components/DeleteProjectModal";
 
 export default function Dashboard() {
+
+  const location = useLocation()
+  const navigate = useNavigate();
   const { data: user, isLoading: authLoading } = useAuth(); //autorización
 
-  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
     retry: false,
   });
-
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: deleteProject,
-    onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: error.message,
-        text: "Ocurrió un error, verifique los datos!",
-      });
-    },
-    onSuccess: (data) => {
-      Swal.fire(data, "Proyecto Creado :)", "success");
-
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
-      navigate("/dashboard");
-    },
-  });
-
-  console.log(data);
-  console.log(user?._id);
+  
 
   if (isLoading && authLoading) return <Spineer />;
   if (data && user)
@@ -132,15 +113,13 @@ export default function Dashboard() {
                               <button
                                 type="button"
                                 className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                onClick={() => mutate(project._id)}
+                                onClick={() => navigate(location.pathname + `?deleteProject=${project._id}`)}
                               >
                                 Eliminar Proyecto
                               </button>
                             </Menu.Item>
                           </>
                         )}
-
-
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -153,6 +132,8 @@ export default function Dashboard() {
             No hay proyectos aún
           </p>
         )}
+
+        <DeleteProjectModal />
       </div>
     );
 }

@@ -11,10 +11,9 @@ export default function RegisterNewToken() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
-  console.log(reset);
+
 
   const { mutate } = useMutation({
     mutationFn: requestConfirmationCodeForm,

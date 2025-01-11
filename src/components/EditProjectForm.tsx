@@ -39,10 +39,9 @@ export default function EditProjectForm({
       });
     },
     onSuccess: (data) => {
+      Swal.fire(data, "Proyecto editado correctamente", "success")
       queryClient.invalidateQueries({queryKey: ['projects']})
       queryClient.invalidateQueries({queryKey: ['editProject', projectId]}) //consultas invalidas
-
-      Swal.fire(data, "Proyecto Creado :)", "success");
       navigate("/dashboard");
     },
   });

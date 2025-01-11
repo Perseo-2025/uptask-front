@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { dashboardProjectsSchema, Project, ProjectFormData } from "../types";
+import { dashboardProjectsSchema, editProjectSchema, Project, ProjectFormData, projectSchema } from "../types";
 //dato este archivo trabaja con el archivo de los types index.js
 export async function createProject(formData:ProjectFormData) {
     const token = localStorage.getItem('AUTH_TOKEN') //obtenemos el token
@@ -33,10 +33,27 @@ export async function getProjects(){
 
 export async function getProjectsById(id: Project['_id']){
     const token = localStorage.getItem('AUTH_TOKEN') //obtenemos el token
-    console.log(token);
     try {
         const { data } = await api(`/dashboard/projects/${id}`, {headers: {Authorization: `Bearer ${token}`}})
-        return data        
+        const response = editProjectSchema.safeParse(data)
+        if(response.success){
+            return response.data
+        }
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error('desde onError');
+        }
+    }
+}
+
+export async function getFullProjectDetails(id: Project['_id']){
+    const token = localStorage.getItem('AUTH_TOKEN') //obtenemos el token
+    try {
+        const { data } = await api(`/dashboard/projects/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = projectSchema.safeParse(data)
+        if(response.success){
+            return response.data
+        }
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error('desde onError');
@@ -52,7 +69,7 @@ export async function updateProject({formData, projectId}: ProjectApiType){
     const token = localStorage.getItem('AUTH_TOKEN') //obtenemos el token
     console.log(token);
     try {
-        const { data } = await api.put<string>(`/dashboard/projects/${projectId}`, formData.clientName, {headers: {Authorization: `Bearer ${token}`}})
+        const { data } = await api.put<string>(`/dashboard/projects/${projectId}`, formData, {headers: {Authorization: `Bearer ${token}`}})
         return data        
     } catch (error) {
         if(isAxiosError(error) && error.response){
@@ -70,7 +87,7 @@ export async function deleteProject(id: Project['_id']){
         return data        
     } catch (error) {
         if(isAxiosError(error) && error.response){
-            throw new Error('desde onError');
+            throw new Error('Ocurrió un error: ');
         }
     }
 }

@@ -15,6 +15,7 @@ import Team from "../../page/projects/team/Team"
 import Profile from "../../profile/Profile"
 import ChangePasswordProfile from "../../profile/ChangePasswordProfile"
 import ProfileLayout from "../../layouts/ProfileLayout"
+import NotFound from "../../page/404/NotFound"
 
 
 
@@ -43,6 +44,10 @@ export default function Router() {
                     <Route path='/auth/request-new-token' element={<RegisterNewToken/>}></Route>
                     <Route path='/auth/change-password' element={<ChangePassword/>}></Route>
                     <Route path='/auth/new-password' element={<NewPassword/>}></Route>
+                </Route>
+
+                <Route element={<AuthLayout/>} > 
+                    <Route path='/404' element={<NotFound/>}></Route>
                 </Route>
 
             </Routes>
